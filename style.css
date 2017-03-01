@@ -1,0 +1,192 @@
+* {
+  box-sizing: inherit;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: #dae9e8;
+  box-sizing: border-box;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: Lato, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  font-weight: 300;
+  margin: 0;
+  text-align: center;
+}
+
+button, input {
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.app {
+  padding-top: 1rem;
+}
+
+.app__title {
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 900;
+  margin: 0 auto 1rem;
+}
+
+.search-form {
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 1rem;
+}
+
+.search-form__field {
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-right: 0;
+  color: rgba(0, 0, 0, 0.6);
+  flex-grow: 1;
+  font-size: 1.25rem;
+  padding: .5rem 1rem;
+}
+
+.search-form__btn {
+  background-color: #8bc34a;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-left: 0;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  font-size: 1.25rem;
+  padding: .5rem 1rem;
+}
+
+.artist {
+  margin: 0 auto 1rem;
+  overflow: hidden;
+  padding: 1rem;
+  position: relative;
+}
+
+.artist__background {
+  background-position: 50%;
+  background-size: cover;
+  filter: blur(16px) grayscale(100%);
+  height: 110%;
+  left: -5%;
+  position: absolute;
+  top: -5%;
+  width: 110%;
+  z-index: -1;
+}
+
+.artist__image {
+  align-items: center;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.5);
+  display: flex;
+  height: 192px;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  overflow: hidden;
+  width: 192px;
+}
+
+.artist__image img {
+  height: 100%;
+  object-fit: cover;
+  transition: transform .3s ease-in-out, filter .3s ease-in-out;
+  width: 100%;
+}
+
+.artist__image:hover img {
+  filter: saturate(125%);
+  transform: scale(1.1);
+}
+
+.artist__name {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin: 0 auto 1rem;
+  text-align: center;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.artist__followers {
+  margin: 0 auto 1rem;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.artist__genres {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.artist__genre {
+  background: #8bc34a;
+  border-radius: 4px;
+  color: rgba(0, 0, 0, 0.75);
+  font-size: .75rem;
+  margin: 0 .25rem .25rem 0;
+  padding: .25rem;
+}
+
+.tracklist {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: -1rem 0 0;
+}
+
+.track {
+  align-items: center;
+  display: flex;
+  flex: 1 0 12rem;
+  justify-content: center;
+  margin: 0.5rem;
+  position: relative;
+}
+
+.track__image {
+  width: 100%;
+}
+
+.track__controls {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%
+}
+
+.track__control {
+  cursor: pointer;
+  font-size: 3rem;
+  transition: transform .3s ease-in-out;
+}
+
+.track__control:hover {
+  transform: scale(1.1);
+}
+
+.track__name {
+  background-color: rgba(0, 0, 0, 0.75);
+  bottom: 0;
+  height: 3rem;
+  line-height: 3rem;
+  position: absolute;
+  width: 100%;
+}
