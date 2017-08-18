@@ -212,6 +212,85 @@ class App extends React.Component {
 
 ReactDOM.render(<App />, document.getElementById('app'));
 
+function Spotify(token) {
+  const baseUrl = 'https://api.spotify.com/v1';
+  let accessToken = token || null;
+
+  function appendParams(url, params) {
+    if (!params) {
+      return url;
+    }
+    const query = Object.keys(params)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+      .join('&');
+
+    return `${url}?${query}`;
+  }
+
+  function request(data) {
+    const url = appendParams(data.url, data.params);
+    const req = new Request(url, {
+      headers: new Headers({
+        Authorization: `Bearer ${accessToken}`, // check if there's a token?
+      }),
+    });
+
+    return new Promise((resolve, reject) => {
+      fetch(req)
+        .then(res => resolve(res.json()))
+        .catch(err => reject(err));
+    });
+  }
+
+  const api = {};
+
+  api.getAccessToken = function() {
+    return accessToken;
+  };
+
+  api.setAccessToken = function(token) {
+    accessToken = token;
+  };
+
+  // used for returned 'next' URLs only
+  api.getNext = function(url) {
+    return (url.indexOf(baseUrl) !== 0) ? null : request(url);
+  };
+
+  api.search = function(q, types, options = {}) {
+    const params = Object.assign({
+      q,
+      type: types.join(','),
+    }, options);
+
+    return request({
+      url: `${baseUrl}/search/`,
+      params,
+    });
+  };
+
+  api.searchArtists = function(q, options) {
+    return this.search(q, ['artist'], options);
+  };
+
+  api.searchArtist = function(q) {
+    const artists = this.searchArtists(q, { limit: 1 });
+
+    return (artists.items.length > 0) ? artists[0] : null;
+  };
+
+  api.getArtistTopTracks = function(id, country) {
+    const data = {
+      url: `${baseUrl}/artists/${id}/top-tracks`,
+      params: { country },
+    };
+
+    return request(data);
+  }
+
+  return api;
+}
+
 /*
  * smoothscroll polyfill - v0.3.5
  * https://iamdustan.github.io/smoothscroll
