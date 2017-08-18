@@ -1,6 +1,3 @@
-const baseUrl = 'https://api.spotify.com/v1/search?';
-const albumUrl = 'https://api.spotify.com/v1/artists/';
-
 class SearchForm extends React.Component {
   constructor(props) {
     super(props);
@@ -47,7 +44,9 @@ const ArtistProfile = ({ artist }) => {
   if (!artist) { return <div className="artist" />; }
 
   const { external_urls, followers, genres, href, images, name } = artist;
-  const style = { backgroundImage: `url(${images[0].url})` };
+  // @todo: check if there is an image, add default image
+  const imageUrl = images.length > 0 ? images[0].url : '';
+  const style = { backgroundImage: `url(${imageUrl})` };
   const genreList = genres.map((genre, i) => (
     <li key={i} className="artist__genre">#{genre}</li>
   ));
@@ -56,7 +55,7 @@ const ArtistProfile = ({ artist }) => {
     <div className="artist">
       <div className="artist__background" style={style} />
       <div className="artist__image">
-        <img src={images[0].url} />
+        <img src={imageUrl} />
       </div>
       <h3 className="artist__name">{name}</h3>
       <div className="artist__followers">
@@ -176,24 +175,36 @@ class App extends React.Component {
 
     this.handleSearch = this.handleSearch.bind(this);
   }
+  componentDidMount() {
+    this.spotify = Spotify();
+
+    fetch('https://zsolti.co/spotify/')
+      .then(res => res.json())
+      .then(res => {
+        this.spotify.setAccessToken(res.token);
+      });
+      // handle error !
+  }
   handleSearch(query) {
-    const fetchUrl = `${baseUrl}q=${query}&type=artist&limit=1`;
+    this.spotify.searchArtists(query, { limit: 1 })
+      .then(res => {
+        console.log(res);
+        return res;
+      })
+      .then(res => {
+        const artist = res.artists.items[0];
 
-    fetch(fetchUrl)
-    .then(res => res.json())
-    .then(res => {
-      const artist = res.artists.items[0];
-      const url = `${albumUrl}${artist.id}/top-tracks?country=GB`;
-
-      this.setState({ artist });
-      return url;
-    })
-    .then(url => fetch(url))
-    .then(res => res.json())
-    .then(res => {
-      const { tracks } = res;
-      this.setState({ tracks });
-    });
+        this.setState({ artist });
+        return artist.id;
+      })
+      .then(id => this.spotify.getArtistTopTracks(id, 'GB'))
+      // .then(id => this.spotify.getArtistAlbums(id))
+      // @todo: check if there are tracks, dispaly message if there isn't any
+      .then(res => {console.log(res); return res; })
+      .then(res => {
+        const { tracks } = res;
+        this.setState({ tracks });
+      });
   }
   componentDidUpdate() {
     document.querySelector('.artist').scrollIntoView({ behavior: 'smooth' });
