@@ -145,7 +145,8 @@ button, input {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  margin: -1rem 0 0;
+  margin: 0 1rem 1rem;
+  max-width: 1440px;
 }
 
 .track {
@@ -153,7 +154,7 @@ button, input {
   display: flex;
   flex: 1 0 12rem;
   justify-content: center;
-  margin: 0.5rem;
+  margin: 1rem;
   position: relative;
 }
 
